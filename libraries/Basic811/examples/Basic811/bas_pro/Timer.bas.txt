@@ -1,9 +1,0 @@
-"Timer"
-on timer(0) = 500  gosub 200
-timer(0) on
-20 dt 48
-dms 100
-goto 20
-200 dt 47
-iret
-

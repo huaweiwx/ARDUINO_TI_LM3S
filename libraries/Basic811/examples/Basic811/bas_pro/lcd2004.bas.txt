@@ -1,9 +1,0 @@
-lcd "AvrBasic m128 Test
-20 dt 46
-dms 1000
-a=a+1
-csr 0 2
-"a=", a
-if a<60 20
-end
-

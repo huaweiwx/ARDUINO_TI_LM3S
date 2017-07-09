@@ -1,9 +1,0 @@
-"erase eep"
-for i = 0 to 119
-E[i] = 0
-dt 47
-next i
-"OK"
-end
-
-

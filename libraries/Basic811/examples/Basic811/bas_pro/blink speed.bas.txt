@@ -1,6 +1,0 @@
-"blink's speed"
-pm 13 1
-40 dt 13
-goto 40
-end
-
