@@ -1,0 +1,1 @@
+#error ***********  This is a dummy library, purely to make the STM32F401_NANO examples easy to access. Do not include it  *********

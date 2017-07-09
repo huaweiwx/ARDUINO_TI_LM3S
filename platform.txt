@@ -1,0 +1,135 @@
+
+# LM3S811 Core and platform.
+#
+# For more info:
+# https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
+
+name= TI Lm3s Serial Boards
+version=1.6.11
+
+# LM3S811 compile variables
+# ----------------------
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
+
+compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
+
+compiler.c.cmd=arm-none-eabi-gcc
+compiler.c.flags=-c -Os -std=gnu11 {compiler.warning_flags} -ffunction-sections -fdata-sections --param max-inline-insns-single=500 -Dprintf=iprintf
+
+compiler.c.elf.cmd=arm-none-eabi-g++
+compiler.c.elf.flags=-Os -Wl,--gc-sections
+compiler.S.flags=-c -g -assembler-with-cpp
+
+compiler.cpp.cmd=arm-none-eabi-g++
+compiler.cpp.flags=-c -Os -std=gnu++11 {compiler.warning_flags} -fno-rtti -fno-exceptions -ffunction-sections -fdata-sections --param max-inline-insns-single=500  -Dprintf=iprintf
+compiler.ar.cmd=arm-none-eabi-ar
+compiler.ar.flags=rcs
+compiler.objcopy.cmd=arm-none-eabi-objcopy
+compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
+
+compiler.elf2hex.cmd=arm-none-eabi-objcopy
+compiler.elf2hex.flags=-O binary
+compiler.elf2hex.flags2=-O ihex
+compiler.elf2hex.extra_flags=
+
+compiler.ldflags=
+compiler.size.cmd=arm-none-eabi-size
+compiler.define=-DARDUINO=
+# this can be overriden in boards.txt
+build.extra_flags=
+
+
+compiler.driverlib.c.flags= "-I{build.system.path}/driverlib/Include/"
+
+
+# arm compile patterns
+# ---------------------
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {build.extra_flags} {compiler.driverlib.c.flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {build.extra_flags} {compiler.driverlib.c.flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+archive_file_path={build.path}/{archive_file}
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} "{archive_file_path}" "{object_file}"
+
+## Combine gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} -mcpu={build.mcu} "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.axf" "-L{build.path}" -lm -lgcc -mthumb -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--entry=ResetISR -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--warn-unresolved-symbols -Wl,--start-group  {object_files} "{archive_file_path}" -Wl,--end-group
+
+## Create eeprom
+recipe.objcopy.eep.pattern=
+
+## Create bin
+recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.axf" "{build.path}/{build.project_name}.bin"
+
+## Create hex
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags2} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.axf" "{build.path}/{build.project_name}.hex"
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.axf"
+recipe.size.regex=^(?:\.text|\.data|\.rodata|\.text.align|\.ARM.exidx)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\.data|\.bss|\.noinit)\s+([0-9]+).*
+
+## Save hex or bin
+recipe.output.tmp_file.bin={build.project_name}.bin
+recipe.output.save_file.bin={build.project_name}.{build.variant}.bin
+recipe.output.tmp_file.hex={build.project_name}.hex
+recipe.output.save_file.hex={build.project_name}.{build.variant}.hex
+recipe.output.tmp_file.axf={build.project_name}.axf
+recipe.output.save_file.axf={build.project_name}.{build.variant}.axf
+
+
+# lm3s Uploader tools
+# -------------------
+
+tools.serial_upload.cmd=lmflash
+tools.serial_upload.cmd.windows=lmflash.exe
+tools.serial_upload.cmd.macosx=serial_upload 
+
+tools.serial_upload.path={runtime.ide.path}/hardware/tools/ti 
+tools.serial_upload.path.macosx={runtime.ide.path}/hardware/tools/macosx 
+tools.serial_upload.path.linux={runtime.ide.path}/hardware/tools/linux 
+
+tools.serial_upload.upload.params.verbose=-d 
+#tools.serial_upload.upload.params.quiet=n 
+#tools.serial_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} "{build.path}/{build.project_name}.hex" {upload.device} {build.uploadadr} {build.uploadadr} 
+tools.serial_upload.upload.pattern="{path}/{cmd}" "--quick-set={upload.dev}"  --reset "{build.path}/{build.project_name}.bin"
+
+# jLINK/V21 upload
+tools.jlink_upload.cmd=jlink_upload
+tools.jlink_upload.cmd.windows=jlink_upload.bat
+tools.jlink_upload.path.windows={runtime.ide.path}/hardware/tools/win
+tools.jlink_upload.path.macosx={runtime.ide.path}/hardware/tools/macosx
+tools.jlink_upload.path.linux={runtime.ide.path}/hardware/tools/linux
+
+tools.jlink_upload.upload.params.verbose=-d
+tools.jlink_upload.upload.params.quiet=
+tools.jlink_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}.hex" {upload.device} {build.uploadadr} {build.vect} 
+
+
+tools.bossac.cmd=bossac
+tools.bossac.cmd.windows=bossac.exe
+#tools.bossac.path={runtime.ide.path}/hardware/tools
+tools.bossac.path={runtime.tools.bossac.path}
+
+
+tools.bossac.upload.params.verbose= -i -D
+tools.bossac.upload.params.quiet=
+tools.bossac.upload.pattern="{path}/{cmd}" {upload.verbose} --port={serial.port.file} -U {upload.native_usb} -e -w -v -b "{build.path}/{build.project_name}.bin" -R
+
+
+tools.sloadhost.cmd=sloadhost
+tools.sloadhost.cmd.windows=sloadhost.exe
+tools.sloadhost.path={runtime.ide.path}/hardware/arduino/stm32
+
+
+tools.sloadhost.upload.params.verbose= 
+tools.sloadhost.upload.params.quiet=
+tools.sloadhost.upload.pattern="{path}/{cmd}" --serialdev {serial.port} --baudrate 115200 --dtrrtsconfigboot --globalerase --loadfile "{build.path}/{build.project_name}.bin" --write 0x08000000
+

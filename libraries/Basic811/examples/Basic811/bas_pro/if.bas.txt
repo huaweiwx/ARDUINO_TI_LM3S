@@ -1,0 +1,9 @@
+"if goto"
+pm 13 1
+10 dt 13
+a= a+1
+"a=";a
+dms 1000
+if a<60 10
+end
+

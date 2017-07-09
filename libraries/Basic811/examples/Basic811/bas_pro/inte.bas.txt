@@ -1,0 +1,28 @@
+"ExterintTest"
+on timer(0) = 500 gosub 200
+on inte(6) = 3 gosub 300
+on inte(7) = 3 gosub 400
+timer(0) on
+inte(6) on
+inte(7) on
+20 b=b+1
+dt 48
+goto 20
+end
+200 dt 47
+a = a+1
+csr 0,3
+lcd a
+csr 15 3
+lcd b
+iret
+300 dt 46
+csr 0,2
+lcd 5
+iret
+400 dt 46
+csr 0,1
+lcd 6
+iret
+
+

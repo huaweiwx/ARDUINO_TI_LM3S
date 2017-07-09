@@ -1,0 +1,71 @@
+#LM3S Serial Boards.TXT  V16.10.28 by huaweiwx@sina.com
+menu.device_variant=Variant
+menu.osc=OSC Speed
+menu.cpu_speed=CPU Speed(MHz)
+menu.upload_method=Upload method
+
+##################### ND #############################
+lm3s811nd.name=EK_LM3S811_ND(8kram 64kflash)
+lm3s811nd.vid.0=0x1CBE
+lm3s811nd.pid.0=0x00FE
+lm3s811nd.build.mcu=cortex-m3
+lm3s811nd.build.f_cpu=50000000L
+lm3s811nd.build.board=LM3S811ND
+lm3s811nd.build.core=arduino
+lm3s811nd.build.extra_flags=-mthumb -DPART_LM3S811
+lm3s811nd.build.ldscript=linker_scripts/lm3s811.ld
+lm3s811nd.build.variant=LM3S811
+lm3s811nd.build.variant_system_lib=driverlib.a
+
+lm3s811nd.upload.maximum_size=65536
+lm3s811nd.upload.maximum_data_size=8192
+
+lm3s811nd.menu.upload_method.ser=Serial
+lm3s811nd.menu.upload_method.ser.upload.protocol=LMflash_serial
+lm3s811nd.menu.upload_method.ser.upload.tool=serial_upload
+lm3s811nd.menu.upload_method.ser.upload.dev=ek-lm3s811
+
+##################### ek_lm3s811 #############################
+lm3s811ek.name=EK_LM3S811   (8kram 64kflash)
+lm3s811ek.vid.0=0x0403
+lm3s811ek.pid.0=0xBCDA
+
+lm3s811ek.build.mcu=cortex-m3
+lm3s811ek.build.f_cpu=50000000L
+lm3s811ek.build.board=LM3S811EVB
+lm3s811ek.build.core=arduino
+lm3s811ek.build.extra_flags=-mthumb -DPART_LM3S811
+lm3s811ek.build.ldscript=linker_scripts/lm3s811.ld
+lm3s811ek.build.variant=LM3S811
+lm3s811ek.build.variant_system_lib=driverlib.a
+
+lm3s811ek.upload.maximum_size=65536
+lm3s811ek.upload.maximum_data_size=8192
+#---------------------------- UPLOAD METHODS ---------------------------
+lm3s811ek.menu.upload_method.ser=Serial
+lm3s811ek.menu.upload_method.ser.upload.protocol=LMflash_serial
+lm3s811ek.menu.upload_method.ser.upload.tool=serial_upload
+lm3s811ek.menu.upload_method.ser.upload.dev=ek-lm3s811
+
+
+##################### ek_lm3s8962 #############################
+lm3s8962ek.name=EK_LM3S8962(64kram 256kflash)
+lm3s8962ek.vid.0=0x0403
+lm3s8962ek.pid.0=0xBCD8
+
+lm3s8962ek.build.mcu=cortex-m3
+lm3s8962ek.build.f_cpu=50000000L
+lm3s8962ek.build.board=EK_LM3S8962
+lm3s8962ek.build.core=arduino
+lm3s8962ek.build.extra_flags=-mthumb -DPART_LM3S8962
+lm3s8962ek.build.ldscript=linker_scripts/lm3s8962.ld
+lm3s8962ek.build.variant=ek_lm3s8962
+lm3s8962ek.build.variant_system_lib=driverlib.a
+
+lm3s8962ek.upload.maximum_size=262144
+lm3s8962ek.upload.maximum_data_size=65536
+#---------------------------- UPLOAD METHODS ---------------------------
+lm3s8962ek.menu.upload_method.ser=Serial
+lm3s8962ek.menu.upload_method.ser.upload.protocol=LMflash_serial
+lm3s8962ek.menu.upload_method.ser.upload.tool=serial_upload
+lm3s8962ek.menu.upload_method.ser.upload.dev=ek-lm3s8962

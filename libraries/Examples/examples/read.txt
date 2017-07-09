@@ -1,0 +1,22 @@
+
+
+examples-
+		|
+		->1.basic-
+		|		 |->Blink0_Morse : LED(PC13) blink as morse code;
+		|		 |->Blink1_Std   : Standard arduino blink test; 
+		|		 |->Blink2_Int   : Blink tested use internal function ledFlash(unit8_t ontime,uint8_t offtime,uint8_t cnt); 
+		|		 |->Blink3_Rdo   : Blink test as 51 opration(regs diracte opration); 
+		|		 |->Blink4_Hal   : Blink test by HAL function; 
+		|                |->Blink5_AllPin: All pins(PA0~15,PB0~10,12~15,PC13~15) blink/per 1sec regs diracte opration as AVR.
+		->2.Digital_Analog-
+		|         		  |->AnalogReadSerial : Analog Read ADC A0 then serial1 print it.
+		|         		  |-DigitalReadSerial : Digital Read PA0 then   serial1 print it.
+		|
+		|
+		->3.Communication-
+		|         		 |->Uart_HelloWorld : serial1 print "Hello World".
+		->4.HAL_Direct-
+		          	  |->HALprintf : serial1 print use microlib printf.
+		          	  |->HALTogglePin: LED Toggle by HAL function.
+		          	  |->HALUart: serial1 output  by HAL function.		
