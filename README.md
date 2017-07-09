@@ -1,2 +1,3 @@
 # TI_LM3S
-TI_LM3S for ARDUINO
+
+Generic implementation of Arduino for STM32 board
