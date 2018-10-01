@@ -25,6 +25,7 @@
 #include <string.h>
 #include <math.h>
 #include "Energia.h"
+#include <limits.h>
 #include "Print.h"
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -84,28 +85,60 @@ size_t Print::print(long n, int base)
         if (n < 0) {
             int t = print('-');
             n = -n;
-            return printNumber(n, 10) + t;
+            return printNumber((unsigned long long)n, 10) + t;
         }
-        return printNumber(n, 10);
+        return printNumber((unsigned long long)n, 10);
     } else {
-        return printNumber(n, base);
+        return printNumber((unsigned long long)n, base);
     }
 }
 
 size_t Print::print(unsigned long n, int base)
 {
     if (base == 0) return write(n);
-    else return printNumber(n, base);
+    else return printNumber((unsigned long long)n, base);
+}
+
+size_t Print::print(long long n, int base)
+{
+    if (base == 0) {
+        return write(n);
+    } else if (base == 10) {
+        if (n < 0) {
+            int t = print('-');
+            n = -n;
+            return printNumber((unsigned long long)n, 10) + t;
+        }
+        return printNumber((unsigned long long)n, 10);
+    } else {
+        return printNumber((unsigned long long)n, base);
+    }
+}
+
+size_t Print::print(unsigned long long n, int base)
+{
+  if (base == 0) return write(n);
+  else return printNumber(n, base);
 }
 
 size_t Print::print(double n, int digits)
 {
-    return printFloat(n, digits);
+  if (n >  LONG_LONG_MAX) return print ("ovf");  // constant determined empirically
+  if (n <  LONG_LONG_MIN) return print ("ovf");  // constant determined empirically
+  if (isnan(n)) return print("nan");
+  if (isinf(n)) return print("inf");
+  
+  return printFloat(n, digits);
 }
 
 size_t Print::print(float n, int digits)
 {
-    return printFloat(n, digits);
+  if (n >  LONG_LONG_MAX) return print ("ovf");  // constant determined empirically
+  if (n <  LONG_LONG_MIN) return print ("ovf");  // constant determined empirically
+  if (isnan(n)) return print("nan");
+  if (isinf(n)) return print("inf");
+  
+  return printFloat((double )n, digits);
 }
 
 //size_t Print::println(const __FlashStringHelper *ifsh)
@@ -176,6 +209,20 @@ size_t Print::println(long num, int base)
     return n;
 }
 
+size_t Print::println(unsigned long long num, int base)
+{
+    size_t n = print(num, base);
+    n += println();
+    return n;
+}
+
+size_t Print::println(long long num, int base)
+{
+    size_t n = print(num, base);
+    n += println();
+    return n;
+}
+
 size_t Print::println(unsigned long num, int base)
 {
     size_t n = print(num, base);
@@ -192,9 +239,7 @@ size_t Print::println(double num, int digits)
 
 size_t Print::println(float num, int digits)
 {
-    size_t n = print(num, digits);
-    n += println();
-    return n;
+    return print((double)num, digits);
 }
 
 size_t Print::println(const Printable& x)
@@ -222,8 +267,8 @@ size_t Print::printf (__const char *__restrict __format, ...)
 // #endif
 // Private Methods /////////////////////////////////////////////////////////////
 
-size_t Print::printNumber(unsigned long n, uint8_t base) {
-    char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
+size_t Print::printNumber(unsigned long long n, uint8_t base) {
+    char buf[8 * sizeof(long long) + 1]; // Assumes 8-bit chars plus zero byte.
     char *str = &buf[sizeof(buf) - 1];
 
     *str = '\0';
@@ -232,9 +277,7 @@ size_t Print::printNumber(unsigned long n, uint8_t base) {
     if (base < 2) base = 10;
 
     do {
-        unsigned long m = n;
-        n /= base;
-        char c = m - base * n;
+        char c = n % base;
         *--str = c < 10 ? c + '0' : c + 'A' - 10;
     } while(n);
 
@@ -245,7 +288,7 @@ size_t Print::printFloat(double number, uint8_t digits)
 { 
     size_t n = 0;
 
-    // Handle negative numbers
+  // Handle negative numbers
     if (number < 0.0)
     {
         n += print('-');
@@ -262,46 +305,6 @@ size_t Print::printFloat(double number, uint8_t digits)
     // Extract the integer part of the number and print it
     unsigned long int_part = (unsigned long)number;
     double remainder = number - (double)int_part;
-    n += print(int_part);
-
-    // Print the decimal point, but only if there are digits beyond
-    if (digits > 0) {
-        n += print(".");
-    }
-
-    // Extract digits from the remainder one at a time
-    while (digits-- > 0)
-    {
-        remainder *= 10.0;
-        int toPrint = int(remainder);
-        n += print(toPrint);
-        remainder -= toPrint;
-    }
-
-    return n;
-}
-
-size_t Print::printFloat(float number, uint8_t digits)
-{
-    size_t n = 0;
-
-    // Handle negative numbers
-    if (number < 0.0)
-    {
-        n += print('-');
-        number = -number;
-    }
-
-    // Round correctly so that print(1.999, 2) prints as "2.00"
-    float rounding = 0.5;
-    for (uint8_t i=0; i<digits; ++i)
-        rounding /= 10.0;
-
-    number += rounding;
-
-    // Extract the integer part of the number and print it
-    unsigned long int_part = (unsigned long)number;
-    float remainder = number - (float)int_part;
     n += print(int_part);
 
     // Print the decimal point, but only if there are digits beyond

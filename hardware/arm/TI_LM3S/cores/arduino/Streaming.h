@@ -76,7 +76,7 @@ inline Print &operator <<(Print &obj, const _BYTE_CODE &arg)
 inline Print &operator <<(Print &obj, const _BASED &arg)
 { obj.print(arg.val, arg.base); return obj; } 
 
-// #if ARDUINO >= 18
+
 // Specialization for class _FLOAT
 // Thanks to Michael Margolis for suggesting a way
 // to accommodate Arduino 0018's floating point precision
@@ -93,21 +93,38 @@ struct _FLOAT
 
 inline Print &operator <<(Print &obj, const _FLOAT &arg)
 { obj.print(arg.val, arg.digits); return obj; }
-// #endif
+
+//add _DOUBLE by huaweiwx@sina.com
+struct _DOUBLE
+{
+  double val;
+  int digits;
+  _DOUBLE(double v, int d): val(v), digits(d)
+  {}
+};
+
+inline Print &operator <<(Print &obj, const _DOUBLE &arg)
+{ obj.print(arg.val, arg.digits); return obj; }
+
 
 // Specialization for enum _EndLineCode
 // Thanks to Arduino forum user Paul V. who suggested this
 // clever technique to allow for expressions like
-//   Serial << "Hello!" << endl;
+//   Serial << "Hello!" << _endl;
 
+#if __has_include("SdFat.h")
+enum _EndLineCode { _endl };
+#else
 enum _EndLineCode { endl };
+#define _endl endl
+#endif
 
 inline Print &operator <<(Print &obj, _EndLineCode arg) 
 {
-
-    (void)(arg); //    UNUSED(arg);
+    (void)(arg);    //UNUSED
 	obj.println(); 
 	return obj; 
 }
+
 
 #endif

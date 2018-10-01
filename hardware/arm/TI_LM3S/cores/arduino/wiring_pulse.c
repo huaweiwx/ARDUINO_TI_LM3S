@@ -30,7 +30,7 @@
  */
 
 #include "wiring_private.h"
-#include "pins_energia.h"
+#include "lm3s/pins_energia.h"
 
 /* Measures the length (in microseconds) of a pulse on the pin; state is HIGH
  * or LOW, the type of pulse to measure.  Works on pulses from 2-3 microseconds

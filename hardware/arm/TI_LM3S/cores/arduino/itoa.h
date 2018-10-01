@@ -14,6 +14,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  for arm  ltoa/ultoa support 64bit. modify by huaweiwx@sina.com 2018.1.12
 */
 
 #ifndef _ITOA_
@@ -23,22 +25,28 @@
 extern "C"{
 #endif // __cplusplus
 
+#ifdef __arm__
+# define ULTOA64 1
+#else
+# define ULTOA64 0
+#endif
+
+
 #if 0
 
-extern void itoa( int n, char s[] ) ;
+extern void itoa(int n, char s[] ) ;
 
 #else
 
-extern char* itoa( int value, char *string, int radix ) ;
-extern char* ltoa( long value, char *string, int radix ) ;
-//extern char* utoa( unsigned int value, char *string, int radix ) ;
-#if __GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 9 || \
-   (__GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ > 2)))
- extern char* utoa( unsigned value, char *string, int radix ) ;
+extern char* itoa(int value, char *string, int radix ) ;
+extern char* utoa( unsigned int value, char *string, int radix ) ;
+#if  ULTOA64
+ extern char* ltoa(long long value, char *string, int radix ) ;
+ extern char* ultoa(unsigned long long value, char *string, int radix ) ;
 #else
- extern char* utoa( unsigned long value, char *string, int radix ) ;
+ extern char* ltoa(long value, char *string, int radix ) ;
+ extern char* ultoa(unsigned long value, char *string, int radix ) ;
 #endif
-extern char* ultoa( unsigned long value, char *string, int radix ) ;
 #endif /* 0 */
 
 #ifdef __cplusplus

@@ -17,6 +17,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  
+  for arm  support 64bit long long type. modify by huaweiwx@sina.com 2018.1.12  
 */
 
 #include "WString.h"
@@ -45,7 +47,7 @@ String::String(const __FlashStringHelper *pstr)
 	*this = pstr;
 }
 
-#ifdef __GXX_EXPERIMENTAL_CXX0X__
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 String::String(String &&rval)
 {
 	init();
@@ -103,6 +105,22 @@ String::String(unsigned long value, unsigned char base)
 {
 	init();
 	char buf[1 + 8 * sizeof(unsigned long)];
+	ultoa(value, buf, base);
+	*this = buf;
+}
+
+String::String(long long value, unsigned char base)
+{
+	init();
+	char buf[2 + 8 * sizeof(long long)];
+	ltoa(value, buf, base);
+	*this = buf;
+}
+
+String::String(unsigned long long value, unsigned char base)
+{
+	init();
+	char buf[1 + 8 * sizeof(unsigned long long)];
 	ultoa(value, buf, base);
 	*this = buf;
 }
@@ -191,11 +209,11 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
 	return *this;
 }
 
-#ifdef __GXX_EXPERIMENTAL_CXX0X__
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 void String::move(String &rhs)
 {
 	if (buffer) {
-		if (capacity >= rhs.len) {
+		if (rhs && capacity >= rhs.len) {
 			strcpy(buffer, rhs.buffer);
 			len = rhs.len;
 			rhs.len = 0;
@@ -223,7 +241,7 @@ String & String::operator = (const String &rhs)
 	return *this;
 }
 
-#ifdef __GXX_EXPERIMENTAL_CXX0X__
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 String & String::operator = (String &&rval)
 {
 	if (this != &rval) move(rval);
@@ -322,6 +340,20 @@ unsigned char String::concat(unsigned long num)
 	return concat(buf, strlen(buf));
 }
 
+unsigned char String::concat(long long num)
+{
+	char buf[2 + 3 * sizeof(long long)];
+	ltoa(num, buf, 10);
+	return concat(buf, strlen(buf));
+}
+
+unsigned char String::concat(unsigned long long num)
+{
+	char buf[1 + 3 * sizeof(unsigned long long)];
+	ultoa(num, buf, 10);
+	return concat(buf, strlen(buf));
+}
+
 unsigned char String::concat(float num)
 {
 	char buf[20];
@@ -402,6 +434,21 @@ StringSumHelper & operator + (const StringSumHelper &lhs, long num)
 }
 
 StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num)
+{
+	StringSumHelper &a = const_cast<StringSumHelper&>(lhs);
+	if (!a.concat(num)) a.invalidate();
+	return a;
+}
+
+
+StringSumHelper & operator + (const StringSumHelper &lhs, long long num)
+{
+	StringSumHelper &a = const_cast<StringSumHelper&>(lhs);
+	if (!a.concat(num)) a.invalidate();
+	return a;
+}
+
+StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long long num)
 {
 	StringSumHelper &a = const_cast<StringSumHelper&>(lhs);
 	if (!a.concat(num)) a.invalidate();
@@ -742,6 +789,11 @@ long String::toInt(void) const
 
 float String::toFloat(void) const
 {
-	if (buffer) return float(atof(buffer));
+	return float(toDouble());
+}
+
+double String::toDouble(void) const
+{
+	if (buffer) return atof(buffer);
 	return 0;
 }

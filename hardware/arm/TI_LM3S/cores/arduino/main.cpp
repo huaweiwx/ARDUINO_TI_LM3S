@@ -1,3 +1,9 @@
+
+
+/*GCC tools chain check  add by huaweiwx@sina.com 2018.9.7*/
+#if __GNUC__ > 5 || (__GNUC__ == 5 && (__GNUC_MINOR__ > 4 || \
+   (__GNUC_MINOR__ == 4 && __GNUC_PATCHLEVEL__ > 0)))
+
 #include <Energia.h>
 
 #if defined(PART_LM3S811)
@@ -45,3 +51,8 @@ int main(void)
 		loop();
 	}
 }
+
+
+#else
+#error "Please update to GCC ver 5-2016q2 https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads"	
+#endif

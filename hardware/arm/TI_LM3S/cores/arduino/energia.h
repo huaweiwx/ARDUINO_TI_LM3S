@@ -16,6 +16,7 @@
 #include "inc/sysctl.h"
 #include "inc/hw_nvic.h" 
 #include "inc/gpio.h" 
+#include "option.h"
 
 #ifdef __cplusplus
 extern "C"{ 
@@ -33,8 +34,11 @@ extern "C"{
 #define HIGH 0x1
 #define LOW  0x0
 
-#define LSBFIRST 0
-#define MSBFIRST 1
+
+enum BitOrder {  /*compatible with arduino sam huaweiwx@sina.com 2018.1.12*/
+	LSBFIRST = 0,
+	MSBFIRST = 1
+};
 
 #define INPUT 0x0
 #define OUTPUT 0x1
@@ -208,6 +212,9 @@ unsigned long micros();
 unsigned long millis();
 void timerInit();
 void registerSysTickCb(void (*userFunc)(uint32_t));
+void yield(void);
+
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
@@ -234,10 +241,14 @@ long random(long, long);
 void randomSeed(unsigned int);
 long map(long, long, long, long, long);
 
-#include "Streaming.h"
+/*C++ including option*/
+#if USE_ARDUINOSTREAMING
+#  include <Streaming.h>
 #endif
 
-#include "pins_energia.h"
+#endif
+#include "lm3s/pins_energia.h"
+
 
 #endif
 
