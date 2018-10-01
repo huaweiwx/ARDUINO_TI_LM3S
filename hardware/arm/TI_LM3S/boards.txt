@@ -13,8 +13,9 @@ lm3s811nd.build.f_cpu=50000000L
 lm3s811nd.build.board=LM3S811ND
 lm3s811nd.build.core=arduino
 lm3s811nd.build.extra_flags=-mthumb -DPART_LM3S811
-lm3s811nd.build.ldscript=linker_scripts/lm3s811.ld
-lm3s811nd.build.variant=LM3S811
+lm3s811nd.build.part=lm3s811
+lm3s811nd.build.ldscript=linker_scripts/{build.part}.ld
+lm3s811nd.build.variant=lm3s811
 lm3s811nd.build.variant_system_lib=driverlib.a
 
 lm3s811nd.upload.maximum_size=65536
@@ -35,8 +36,9 @@ lm3s811ek.build.f_cpu=50000000L
 lm3s811ek.build.board=LM3S811EVB
 lm3s811ek.build.core=arduino
 lm3s811ek.build.extra_flags=-mthumb -DPART_LM3S811
-lm3s811ek.build.ldscript=linker_scripts/lm3s811.ld
-lm3s811ek.build.variant=LM3S811
+lm3s811ek.build.part=lm3s811
+lm3s811ek.build.ldscript=linker_scripts/{build.part}.ld
+lm3s811ek.build.variant=lm3s811
 lm3s811ek.build.variant_system_lib=driverlib.a
 
 lm3s811ek.upload.maximum_size=65536
@@ -58,8 +60,9 @@ lm3s8962ek.build.f_cpu=50000000L
 lm3s8962ek.build.board=EK_LM3S8962
 lm3s8962ek.build.core=arduino
 lm3s8962ek.build.extra_flags=-mthumb -DPART_LM3S8962
-lm3s8962ek.build.ldscript=linker_scripts/lm3s8962.ld
-lm3s8962ek.build.variant=ek_lm3s8962
+lm3s8962ek.build.part=lm3s8962
+lm3s8962ek.build.ldscript=linker_scripts/{build.part}.ld
+lm3s8962ek.build.variant=lm3s8962
 lm3s8962ek.build.variant_system_lib=driverlib.a
 
 lm3s8962ek.upload.maximum_size=262144
