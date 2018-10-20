@@ -1,8 +1,11 @@
 #LM3S Serial Boards.TXT  V16.10.28 by huaweiwx@sina.com
-menu.device_variant=Variant
-menu.osc=OSC Speed
+
+menu.cpu=Processor
+menu.clock_source=Clock source
+menu.osc_speed=OSC Speed(MHz)
 menu.cpu_speed=CPU Speed(MHz)
 menu.upload_method=Upload method
+menu.log=Debug Log_level
 
 ##################### ND #############################
 lm3s811nd.name=EK_LM3S811_ND(8kram 64kflash)
@@ -18,6 +21,25 @@ lm3s811nd.build.ldscript=linker_scripts/{build.part}.ld
 lm3s811nd.build.variant=lm3s811
 lm3s811nd.build.variant_system_lib=driverlib.a
 
+#-------------------------------------- DEBUG & LOGLEVEL ---------------------------------------#
+lm3s811nd.menu.log.default=Release(no-exceptions)
+lm3s811nd.menu.log.default.build.log_level=-fno-exceptions
+lm3s811nd.menu.log.Release=Release(exceptions)
+lm3s811nd.menu.log.Release.build.log_level=
+lm3s811nd.menu.log.fatal=FATAL
+lm3s811nd.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
+lm3s811nd.menu.log.error=ERROR
+lm3s811nd.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
+lm3s811nd.menu.log.warning=WARNING
+lm3s811nd.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
+lm3s811nd.menu.log.info=INFO
+lm3s811nd.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
+lm3s811nd.menu.log.debug=DEBUG
+lm3s811nd.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
+lm3s811nd.menu.log.trace=TRACE
+lm3s811nd.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
+
+#---------------------------- UPLOAD METHODS ---------------------------
 lm3s811nd.upload.maximum_size=65536
 lm3s811nd.upload.maximum_data_size=8192
 
@@ -41,9 +63,27 @@ lm3s811ek.build.ldscript=linker_scripts/{build.part}.ld
 lm3s811ek.build.variant=lm3s811
 lm3s811ek.build.variant_system_lib=driverlib.a
 
+#-------------------------------------- DEBUG & LOGLEVEL ---------------------------------------#
+lm3s811ek.menu.log.default=Release(no-exceptions)
+lm3s811ek.menu.log.default.build.log_level=-fno-exceptions
+lm3s811ek.menu.log.Release=Release(exceptions)
+lm3s811ek.menu.log.Release.build.log_level=
+lm3s811ek.menu.log.fatal=FATAL
+lm3s811ek.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
+lm3s811ek.menu.log.error=ERROR
+lm3s811ek.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
+lm3s811ek.menu.log.warning=WARNING
+lm3s811ek.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
+lm3s811ek.menu.log.info=INFO
+lm3s811ek.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
+lm3s811ek.menu.log.debug=DEBUG
+lm3s811ek.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
+lm3s811ek.menu.log.trace=TRACE
+lm3s811ek.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
+
+#---------------------------- UPLOAD METHODS ---------------------------
 lm3s811ek.upload.maximum_size=65536
 lm3s811ek.upload.maximum_data_size=8192
-#---------------------------- UPLOAD METHODS ---------------------------
 lm3s811ek.menu.upload_method.ser=Serial
 lm3s811ek.menu.upload_method.ser.upload.protocol=LMflash_serial
 lm3s811ek.menu.upload_method.ser.upload.tool=serial_upload
@@ -65,9 +105,27 @@ lm3s8962ek.build.ldscript=linker_scripts/{build.part}.ld
 lm3s8962ek.build.variant=lm3s8962
 lm3s8962ek.build.variant_system_lib=driverlib.a
 
+#-------------------------------------- DEBUG & LOGLEVEL ---------------------------------------#
+lm3s8962ek.menu.log.default=Release(no-exceptions)
+lm3s8962ek.menu.log.default.build.log_level=-fno-exceptions
+lm3s8962ek.menu.log.Release=Release(exceptions)
+lm3s8962ek.menu.log.Release.build.log_level=
+lm3s8962ek.menu.log.fatal=FATAL
+lm3s8962ek.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
+lm3s8962ek.menu.log.error=ERROR
+lm3s8962ek.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
+lm3s8962ek.menu.log.warning=WARNING
+lm3s8962ek.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
+lm3s8962ek.menu.log.info=INFO
+lm3s8962ek.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
+lm3s8962ek.menu.log.debug=DEBUG
+lm3s8962ek.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
+lm3s8962ek.menu.log.trace=TRACE
+lm3s8962ek.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
+
+#---------------------------- UPLOAD METHODS ---------------------------
 lm3s8962ek.upload.maximum_size=262144
 lm3s8962ek.upload.maximum_data_size=65536
-#---------------------------- UPLOAD METHODS ---------------------------
 lm3s8962ek.menu.upload_method.ser=Serial
 lm3s8962ek.menu.upload_method.ser.upload.protocol=LMflash_serial
 lm3s8962ek.menu.upload_method.ser.upload.tool=serial_upload
