@@ -44,9 +44,15 @@ class TwoWire : public Stream
     public:
 		TwoWire(void);
         TwoWire(unsigned long);
+#if USE_ITERATOR >0  /*for stl begin/end is keywords for iteration*/
+		void Init();
+		void Init(uint8_t);
+		void Init(int);
+#else
 		void begin();
 		void begin(uint8_t);
 		void begin(int);
+#endif	
 		void beginTransmission(uint8_t);
 		void beginTransmission(int);
 		uint8_t endTransmission(void);

@@ -239,6 +239,10 @@ uint8_t TwoWire::i2cModule = NOT_ACTIVE;
 uint8_t TwoWire::slaveAddress = 0;
 // Constructors ////////////////////////////////////////////////////////////////
 
+#if USE_ITERATOR >0  /*for stl begin/end is keywords for iteration*/
+#define begin Init
+#endif	
+
 TwoWire::TwoWire()
 {
 }
