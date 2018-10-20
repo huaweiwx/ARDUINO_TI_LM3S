@@ -86,6 +86,26 @@ int digitalRead(uint8_t pin)
     return LOW;
 }
 
+void digitalWriteHigh(uint8_t pin)
+{
+	if (pin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(pin);
+    uint8_t port = digitalPinToPort(pin);
+	uint32_t portBase = (uint32_t) portBASERegister(port);
+    GPIOPinWrite(portBase, bit, bit);
+}
+
+
+void digitalWriteLow(uint8_t pin)
+{
+	if (pin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(pin);
+    uint8_t port = digitalPinToPort(pin);
+	uint32_t portBase = (uint32_t) portBASERegister(port);
+    GPIOPinWrite(portBase, bit, 0);
+}
+
+
 void digitalWrite(uint8_t pin, uint8_t val)
 {
 	if (pin > NUM_DIGITAL_PINS) return;

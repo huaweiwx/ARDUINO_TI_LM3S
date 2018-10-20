@@ -10,6 +10,8 @@ Print	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 digitalToggle	KEYWORD2
+digitalWriteHigh	KEYWORD2
+digitalWriteLow	KEYWORD2
 __ConstPin	KEYWORD1
 
 LL_PIN	KEYWORD1
