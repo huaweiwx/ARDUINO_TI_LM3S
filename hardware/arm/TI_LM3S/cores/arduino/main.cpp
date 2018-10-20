@@ -4,7 +4,7 @@
 #if __GNUC__ > 5 || (__GNUC__ == 5 && (__GNUC_MINOR__ > 4 || \
    (__GNUC_MINOR__ == 4 && __GNUC_PATCHLEVEL__ > 0)))
 
-#include <Energia.h>
+#include <Arduino.h>
 
 #if defined(PART_LM3S811)
 //    #include "inc/lm3S811.h"

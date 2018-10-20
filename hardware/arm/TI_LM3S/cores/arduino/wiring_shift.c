@@ -2,7 +2,7 @@
  ************************************************************************
  *	wiring_shift.c
  *
- *	Energia core files for MSP430
+ *	arduino core files for LM3S
  *		Copyright (c) 2012 Robert Wessels. All right reserved.
  *
  *

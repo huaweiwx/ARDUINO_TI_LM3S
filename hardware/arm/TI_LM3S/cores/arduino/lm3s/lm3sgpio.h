@@ -41,6 +41,16 @@ inline void pinMode(__ConstPin cPin, const uint32_t mode) {
   }
 }
 
+inline void digitalWriteHigh(__ConstPin cPin)
+{
+  GPIOPinWrite(cPin.port, cPin.pin, cPin.pin);
+}
+
+inline void digitalWriteLow(__ConstPin cPin)
+{
+  GPIOPinWrite(cPin.port, cPin.pin, 0);
+}
+
 template<typename T>
 inline void digitalWrite(__ConstPin cPin, T val )
 {
@@ -60,9 +70,9 @@ inline void digitalToggle(__ConstPin cPin)
 {
   /* can add a section here to see if pin is readable */
   if (digitalRead(cPin))
-    digitalWrite(cPin, 0);
+    digitalWriteLow(cPin);
   else
-    digitalWrite(cPin, 1);
+    digitalWriteHigh(cPin);
 }
 
 /*gpio low layer interface class*/

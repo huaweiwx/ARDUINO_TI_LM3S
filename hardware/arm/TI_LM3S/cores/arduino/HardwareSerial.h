@@ -63,7 +63,6 @@ class HardwareSerial : public Stream
 		void begin(unsigned long);
 		void setBufferSize(unsigned long, unsigned long);
 		void setModule(unsigned long);
-/*		void setPins(unsigned long);*/
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);
@@ -73,7 +72,6 @@ class HardwareSerial : public Stream
 		virtual size_t write(uint8_t c);
 		operator bool();
 		using Print::write; // pull in write(str) and write(buf, size) from Print
-        
 };
 
 extern HardwareSerial Serial;

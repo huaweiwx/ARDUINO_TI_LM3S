@@ -7,8 +7,4 @@
 # include "configs/HAL_Conf.h"
 #endif
 
-#ifndef USE_BITCONSTANTS
-#define USE_BITCONSTANTS 1
-#endif
-
 #endif /*__OPTION_H__*/

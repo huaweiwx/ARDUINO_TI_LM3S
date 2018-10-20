@@ -1,6 +1,6 @@
 /* Tone.cpp
 
-  A Tone Generator Library - Modified for Energia
+  A Tone Generator Library - Modified for arduino
   Implements up to 3 (software) PWM outputs using TIMERA0 compare registers and IRQ. 
   Can use any digital output pin for pulse generation
 

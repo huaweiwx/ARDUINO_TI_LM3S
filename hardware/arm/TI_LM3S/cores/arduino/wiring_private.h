@@ -34,7 +34,7 @@
 #ifndef WiringPrivate_h
 #define WiringPrivate_h
 
-#include "Energia.h"
+#include "Arduino.h"
 
 #ifdef __cplusplus
 extern "C"{

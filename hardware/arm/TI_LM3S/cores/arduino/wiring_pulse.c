@@ -2,7 +2,7 @@
  ************************************************************************
  *	wiring_pulse.c
  *
- *	Energia core files for LM3S811 by huaweiwx@sina.com
+ *	Arduino core files for LM3S811 by huaweiwx@sina.com
  *		Copyright (c) 2012 Robert Wessels. All right reserved.
  *
  *
@@ -30,7 +30,7 @@
  */
 
 #include "wiring_private.h"
-#include "lm3s/pins_energia.h"
+#include "lm3s/pins_arduino.h"
 
 /* Measures the length (in microseconds) of a pulse on the pin; state is HIGH
  * or LOW, the type of pulse to measure.  Works on pulses from 2-3 microseconds
