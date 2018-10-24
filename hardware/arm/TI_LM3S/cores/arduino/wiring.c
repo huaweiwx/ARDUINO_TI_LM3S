@@ -52,20 +52,19 @@ static volatile unsigned long milliseconds = 0;
 #define SYSTICK_INT_PRIORITY    0x80
 void timerInit()
 {
-
-      SysCtlLDOSet(SYSCTL_LDO_2_75V);    //配置PLL前需将LDO电压设置为2.75V  
+    SysCtlLDOSet(SYSCTL_LDO_2_75V);    //配置PLL前需将LDO电压设置为2.75V  
 #if defined(PART_LM3S8962)
-      SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |SYSCTL_XTAL_8MHZ);
+    SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |SYSCTL_XTAL_8MHZ);
 #elif defined(PART_LM3S811)	  
-      SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |SYSCTL_XTAL_6MHZ);
+    SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |SYSCTL_XTAL_6MHZ);
 #else
 #  warning "mcu undefined!"
 #endif
     //
     //  SysTick is used for delay() and delayMicroseconds()
     //
-      SysTickPeriodSet(SysCtlClockGet()/ SYSTICKHZ);
-      SysTickEnable();
+    SysTickPeriodSet(SysCtlClockGet()/ SYSTICKHZ);
+    SysTickEnable();
 
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);

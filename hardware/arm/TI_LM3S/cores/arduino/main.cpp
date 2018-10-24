@@ -6,6 +6,12 @@
 
 #include <Arduino.h>
 
+// Declared weak in Arduino.h to allow user redefinitions.
+int atexit(void (* /*func*/ )()) { return 0; }
+
+void initVariant() __attribute__((weak));
+void initVariant() { }
+
 #if defined(PART_LM3S811)
 //    #include "inc/lm3S811.h"
 #elif defined(PART_LM3S8962)
@@ -45,10 +51,19 @@ int main(void)
 #if defined(PART_LM3S8962)
 	init();
 #endif
+
+	initVariant();
+
 	setup();
 
 	for (;;) {
-		loop();
+#if USE_CORECALLBACK > 0
+      coreCallback();
+#endif
+	  loop();
+#if USE_SERIALEVENTRUN > 0	
+      if (serialEventRun) serialEventRun();
+#endif
 	}
 }
 

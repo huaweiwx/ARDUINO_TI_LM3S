@@ -17,7 +17,7 @@
 #include "inc/hw_nvic.h" 
 #include "inc/gpio.h" 
 #include "option.h"
-
+#include "utils/utils_all.h"
 #ifdef __cplusplus
 extern "C"{ 
 #endif 
@@ -28,11 +28,11 @@ extern "C"{
 #define NOT_ON_TIMER 0
 #define NOT_ON_ADC 0x10
 
-#define CHANGE 4
+#define CHANGE  4
 #define FALLING 3
-#define RISING 2
-#define HIGH 0x1
-#define LOW  0x0
+#define RISING  2
+#define HIGH  0x1
+#define LOW   0x0
 
 
 enum BitOrder {  /*compatible with arduino sam huaweiwx@sina.com 2018.1.12*/
@@ -54,6 +54,7 @@ enum BitOrder {  /*compatible with arduino sam huaweiwx@sina.com 2018.1.12*/
 #define TWO_PI 6.283185307179586476925286766559
 #define DEG_TO_RAD 0.017453292519943295769236907684886
 #define RAD_TO_DEG 57.295779513082320876798154814105
+#define EULER 2.718281828459045235360287471352
 
 #define PA 0
 #define PB 1
@@ -103,7 +104,6 @@ typedef uint8_t byte;
 #define noInterrupts() IntMasterDisable()
 
 #define clockCyclesPerMicrosecond() (F_CPU / 1000000L )
-//#define clockCyclesPerMicrosecond() ( 80000000L / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
 
@@ -114,11 +114,11 @@ typedef uint8_t byte;
 #define bitSet(value, bit) ((value) |= (1UL << (bit)))
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
+#define bit(b) (1UL << (b))
 
 
 typedef unsigned int word;
 
-#define bit(b) (1UL << (b))
 
 void init(void);
 void setup(void);
@@ -127,6 +127,7 @@ void loop(void);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+#define pulseInLong pulseIn  /*compatible with arduino*/
 void pinMode(uint8_t, uint8_t);
 void digitalWriteHigh(uint8_t);
 void digitalWriteLow(uint8_t);
