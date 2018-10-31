@@ -57,7 +57,7 @@ class FAST_PIN{
  public:
   //----------------------------------------------------------------------------
   constexpr const uint16_t port(void){return variant_gpiopin_port_static[PinNumber];};
-  constexpr const uint16_t pin(void){return variant_gpiopin_pin_static[PinNumber];};
+  constexpr const uint16_t pinMask(void){return variant_gpiopin_pin_static[PinNumber];};
   constexpr const uint16_t ddr(void){return variant_gpiopin_ddr_static[PinNumber];};
   constexpr const uint8_t  ibit(void){return variant_gpiopin_bit_static[PinNumber];};
   
@@ -101,7 +101,7 @@ class FAST_PIN{
 
   inline __attribute__((always_inline))
   bool read() const{
-    return (*(volatile uint8_t *)(this->pin()) & this->ibit)?HIGH:LOW;
+    return (*(volatile uint8_t *)(this->pinMask()) & this->ibit)?HIGH:LOW;
   }
   
   inline void operator  !() __attribute__((always_inline)) {this->toggle();}

@@ -23,14 +23,14 @@
 
 class __ConstPin {
   public:
-    constexpr __ConstPin(const uint32_t port, const  uint32_t pin, const uint8_t val)
-      : port(port), pin(pin), val(val) {};
+    constexpr __ConstPin(const uint32_t port, const  uint32_t pinMask, const uint8_t ucPin)
+      : port(port), pinMask(pinMask), ucPin(ucPin) {};
     constexpr operator int() const {
-      return val;
+      return ucPin;
     }
     const uint32_t port;
-    const  uint32_t pin;
-    const uint8_t val;
+    const uint32_t pinMask;
+    const uint8_t ucPin;
 };
 #define PIN(a, b) __P##a##b
 enum {

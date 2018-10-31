@@ -66,19 +66,19 @@ void enableTimerPeriph(uint32_t offset) {
 void analogReference(uint16_t mode) {
 }
 
-void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq) {
+void PWMWrite(uint8_t ucPin, uint32_t analog_res, uint32_t duty, unsigned int freq) {
     if (duty == 0) {
-    	pinMode(pin, OUTPUT);
-        digitalWrite(pin, LOW);
+    	pinMode(ucPin, OUTPUT);
+        digitalWrite(ucPin, LOW);
     }
     else if (duty >= analog_res) {
-    	pinMode(pin, OUTPUT);
-    	digitalWrite(pin, HIGH);
+    	pinMode(ucPin, OUTPUT);
+    	digitalWrite(ucPin, HIGH);
     }
     else {
-        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
-        uint8_t port = digitalPinToPort(pin);   // get pin port
-        uint8_t timer = digitalPinToTimer(pin);
+        uint8_t bit = digitalPinToBitMask(ucPin); // get ucPin bit
+        uint8_t port = digitalPinToPort(ucPin);   // get ucPin port
+        uint8_t timer = digitalPinToTimer(ucPin);
         uint32_t portBase = (uint32_t) portBASERegister(port);
         uint32_t offset = timerToOffset(timer);
         uint32_t timerBase = getTimerBase(offset);
@@ -116,25 +116,25 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
         TimerEnable(timerBase, timerAB);
     }
 }
-void analogWrite(uint8_t pin, int val) {
+void analogWrite(uint8_t ucPin, int val) {
     //
     //  duty cycle(%) = val / 255;
     //  Frequency of 490Hz specified by Arduino API
     //
-    PWMWrite(pin, 255, val, 490);
+    PWMWrite(ucPin, 255, val, 490);
 }
 
-uint16_t analogRead(uint8_t pin) {
-//    uint8_t  port = digitalPinToPort(pin);
+uint16_t analogRead(uint8_t ucPin) {
+//    uint8_t  port = digitalPinToPort(ucPin);
     uint16_t value[1];
-    uint32_t channel = digitalPinToADCIn(pin);
-    if (channel == NOT_ON_ADC) { //invalid ADC pin
+    uint32_t channel = digitalPinToADCIn(ucPin);
+    if (channel == NOT_ON_ADC) { //invalid ADC ucPin
         return 0;
     }
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
 #if 0
     if(channel != ADC_CTL_TS)
-        GPIOPinTypeADC((uint32_t) portBASERegister(port), digitalPinToBitMask(pin));
+        GPIOPinTypeADC((uint32_t) portBASERegister(port), digitalPinToBitMask(ucPin));
 #endif
     ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
     ADCSequenceStepConfigure(ADC0_BASE, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);

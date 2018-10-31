@@ -27,68 +27,68 @@ extern "C" {
 
 #ifdef __cplusplus
 }
-inline void pinMode(__ConstPin cPin, const uint32_t mode) {
+inline void pinMode(__ConstPin CPin, const uint32_t mode) {
   if (mode == INPUT) {
-    GPIOPinTypeGPIOInput(cPin.port, cPin.pin);
+    GPIOPinTypeGPIOInput(CPin.port, CPin.pinMask);
   } else if (mode == INPUT_PULLUP) {  //mode 2
-    GPIODirModeSet(cPin.port, cPin.pin, GPIO_DIR_MODE_IN);
-    GPIOPadConfigSet(cPin.port, cPin.pin, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    GPIODirModeSet(CPin.port, CPin.pinMask, GPIO_DIR_MODE_IN);
+    GPIOPadConfigSet(CPin.port, CPin.pinMask, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
   } else if (mode == INPUT_PULLDOWN) { //mode 3
-    GPIODirModeSet(cPin.port, cPin.pin, GPIO_DIR_MODE_IN);
-    GPIOPadConfigSet(cPin.port, cPin.pin, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD);
+    GPIODirModeSet(CPin.port, CPin.pinMask, GPIO_DIR_MODE_IN);
+    GPIOPadConfigSet(CPin.port, CPin.pinMask, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD);
   } else {  //mode == OUTPUT 1
-    GPIOPinTypeGPIOOutput(cPin.port, cPin.pin);
+    GPIOPinTypeGPIOOutput(CPin.port, CPin.pinMask);
   }
 }
 
-inline void digitalWriteHigh(__ConstPin cPin)
+inline void digitalWriteHigh(__ConstPin CPin)
 {
-  GPIOPinWrite(cPin.port, cPin.pin, cPin.pin);
+  GPIOPinWrite(CPin.port, CPin.pinMask, CPin.pinMask);
 }
 
-inline void digitalWriteLow(__ConstPin cPin)
+inline void digitalWriteLow(__ConstPin CPin)
 {
-  GPIOPinWrite(cPin.port, cPin.pin, 0);
-}
-
-template<typename T>
-inline void digitalWrite(__ConstPin cPin, T val )
-{
-  GPIOPinWrite(cPin.port, cPin.pin, (val) ? cPin.pin:0);
+  GPIOPinWrite(CPin.port, CPin.pinMask, 0);
 }
 
 template<typename T>
-inline T digitalRead(__ConstPin cPin)
+inline void digitalWrite(__ConstPin CPin, T val )
 {
-  if (GPIOPinRead(cPin.port, cPin.pin)) {
+  GPIOPinWrite(CPin.port, CPin.pinMask, (val) ? CPin.pinMask:0);
+}
+
+template<typename T>
+inline T digitalRead(__ConstPin CPin)
+{
+  if (GPIOPinRead(CPin.port, CPin.pinMask)) {
     return HIGH;
   }
   return LOW;
 }
 
-inline void digitalToggle(__ConstPin cPin)
+inline void digitalToggle(__ConstPin CPin)
 {
   /* can add a section here to see if pin is readable */
-  if (digitalRead(cPin))
-    digitalWriteLow(cPin);
+  if (digitalRead(CPin))
+    digitalWriteLow(CPin);
   else
-    digitalWriteHigh(cPin);
+    digitalWriteHigh(CPin);
 }
 
 /*gpio low layer interface class*/
 class LL_PIN {
   public:
-    constexpr LL_PIN(__ConstPin cpin): cpin(cpin) {};
-    __ConstPin cpin;
+    constexpr LL_PIN(__ConstPin CPin): CPin(CPin) {};
+    __ConstPin CPin;
 
     template<typename T = bool>
     inline  T read() {
-      return digitalRead(cpin);
+      return digitalRead(CPin);
     }
 
     template<typename T>
     inline void write(T value) {
-      digitalWrite(cpin, value);
+      digitalWrite(CPin, value);
     }
 
     template<typename T>
@@ -129,7 +129,7 @@ class LL_PIN {
     /*----- comptabled with DigitalPin ----------*/
     inline __attribute__((always_inline))
     void toggle() {
-      digitalToggle(cpin);
+      digitalToggle(CPin);
     }
 
     inline __attribute__((always_inline))
@@ -139,22 +139,22 @@ class LL_PIN {
     }
     inline __attribute__((always_inline))
     void mode(uint32_t mode) {
-      pinMode(cpin, mode);
+      pinMode(CPin, mode);
     }
     inline __attribute__((always_inline))
     void attach( void (*callback)(void), uint32_t mode) {
-      attachInterrupt(cpin, callback, mode);
+      attachInterrupt(CPin.ucPin, callback, mode);
     }
 
     inline __attribute__((always_inline))
     void detach(void) {
-      detachInterrupt(cpin);
+      detachInterrupt(CPin.ucPin);
     }
 };
 
 class InputPin : public LL_PIN {
   public:
-    constexpr InputPin(__ConstPin cpin, bool initial_value = 1): LL_PIN(cpin) {
+    constexpr InputPin(__ConstPin CPin, bool initial_value = 1): LL_PIN(CPin) {
       config(INPUT, initial_value);
     }
 
@@ -194,7 +194,7 @@ class InputPin : public LL_PIN {
 
 class OutputPin : public LL_PIN {
   public:
-    constexpr OutputPin(__ConstPin cpin, bool initial_value = 0): LL_PIN(cpin) {
+    constexpr OutputPin(__ConstPin CPin, bool initial_value = 0): LL_PIN(CPin) {
       config(OUTPUT, initial_value);
     }
 

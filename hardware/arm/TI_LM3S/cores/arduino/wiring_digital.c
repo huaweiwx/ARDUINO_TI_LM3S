@@ -37,11 +37,11 @@
 #include "inc/sysctl.h"
 //#define GPIO_LOCK_KEY_DD        0x4C4F434B    //lm3s811 not this regs
 
-void pinMode(uint8_t pin, uint8_t mode)
+void pinMode(uint8_t ucPin, uint8_t mode)
 {
-	if (pin > NUM_DIGITAL_PINS) return;
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
+	if (ucPin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(ucPin);
+    uint8_t port = digitalPinToPort(ucPin);
 //  if (port == NOT_A_PIN) return;
 	
     uint32_t portBase = (uint32_t) portBASERegister(port);
@@ -72,11 +72,11 @@ void pinMode(uint8_t pin, uint8_t mode)
 
 }
 
-int digitalRead(uint8_t pin)
+int digitalRead(uint8_t ucPin)
 {
-	if (pin > NUM_DIGITAL_PINS) return LOW;
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
+	if (ucPin > NUM_DIGITAL_PINS) return LOW;
+    uint8_t bit = digitalPinToBitMask(ucPin);
+    uint8_t port = digitalPinToPort(ucPin);
 //    if (port == NOT_A_PIN) return LOW;
 	
     uint32_t portBase = (uint32_t) portBASERegister(port);
@@ -86,32 +86,32 @@ int digitalRead(uint8_t pin)
     return LOW;
 }
 
-void digitalWriteHigh(uint8_t pin)
+void digitalWriteHigh(uint8_t ucPin)
 {
-	if (pin > NUM_DIGITAL_PINS) return;
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
+	if (ucPin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(ucPin);
+    uint8_t port = digitalPinToPort(ucPin);
 	uint32_t portBase = (uint32_t) portBASERegister(port);
     GPIOPinWrite(portBase, bit, bit);
 }
 
 
-void digitalWriteLow(uint8_t pin)
+void digitalWriteLow(uint8_t ucPin)
 {
-	if (pin > NUM_DIGITAL_PINS) return;
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
+	if (ucPin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(ucPin);
+    uint8_t port = digitalPinToPort(ucPin);
 	uint32_t portBase = (uint32_t) portBASERegister(port);
     GPIOPinWrite(portBase, bit, 0);
 }
 
 
-void digitalWrite(uint8_t pin, uint8_t val)
+void digitalWrite(uint8_t ucPin, uint8_t val)
 {
-	if (pin > NUM_DIGITAL_PINS) return;
-    uint8_t bit = digitalPinToBitMask(pin);
+	if (ucPin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(ucPin);
     uint8_t mask = val ? bit : 0;
-    uint8_t port = digitalPinToPort(pin);
+    uint8_t port = digitalPinToPort(ucPin);
 //    if (port == NOT_A_PORT) return;
     
 	uint32_t portBase = (uint32_t) portBASERegister(port);
@@ -119,11 +119,11 @@ void digitalWrite(uint8_t pin, uint8_t val)
 }
 
 //add by huawei
-void digitalToggle(uint8_t pin)
+void digitalToggle(uint8_t ucPin)
 {
-	if (pin > NUM_DIGITAL_PINS) return;
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
+	if (ucPin > NUM_DIGITAL_PINS) return;
+    uint8_t bit = digitalPinToBitMask(ucPin);
+    uint8_t port = digitalPinToPort(ucPin);
 //    if (port == NOT_A_PORT) return;
 	
     uint32_t portBase = (uint32_t) portBASERegister(port);
@@ -132,16 +132,16 @@ void digitalToggle(uint8_t pin)
     GPIOPinWrite(portBase, bit, mask);
 }
 
-extern void digitalFlash(uint8_t pin, uint16_t timeon,uint16_t timeoff,uint8_t cnt,uint8_t on){
+extern void digitalFlash(uint8_t ucPin, uint16_t timeon,uint16_t timeoff,uint8_t cnt,uint8_t on){
 	volatile uint8_t i;
            
 	for( i=cnt;i>0;i--){
 		if(timeon >0 ){
-          digitalWrite(pin, on);
+          digitalWrite(ucPin, on);
 		  delay(timeon);
 		}  
 		if(timeoff >0){
-		  digitalWrite(pin, (on?LOW:HIGH));
+		  digitalWrite(ucPin, (on?LOW:HIGH));
 		  delay(timeoff);
 		}   
 	}
